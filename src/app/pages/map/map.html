@@ -1,0 +1,26 @@
+  <ion-header>
+      <ion-toolbar>
+          <ion-buttons slot="start">
+              <ion-menu-toggle>
+                  <ion-menu-button>
+                      Toggle Menu
+                  </ion-menu-button>
+              </ion-menu-toggle>
+              <ion-back-button></ion-back-button>
+          </ion-buttons>
+          <ion-title>DondeCargo.do</ion-title>
+      </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-button expand="full" class="btn btn-secondary"  [hidden]="!adminButton" id="addPlugButton" (click)="addPlug()">Agregar Plug</ion-button>
+    <ion-button expand="full" class="btn btn-info"  [hidden]="!adminButton" id="ConfigurePlugButton" (click)="configurePlug()">Configurar Plugs</ion-button>
+    <div #pleaseConnect id="please-connect">
+      <p>Favor conectarse al internet...</p>
+    </div>
+    
+    <div #map id="map"> </div>
+   
+  <ion-button ion-button full color="primary" [hidden]="!showButton" id="reserveButton" (click)="toReserve()">Reservar</ion-button>
+
+  </ion-content>

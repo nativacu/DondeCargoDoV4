@@ -1,0 +1,42 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button *ngIf="this.platform.checkPlatform();"></ion-back-button>
+        </ion-buttons>
+        <ion-title>Iniciar Sesión</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-label position="floating">Correo</ion-label>
+        <ion-input type="email" id="defaultLoginFormEmail"  [(ngModel)]="loginEmail" required #email> </ion-input>
+    </ion-item>
+
+    <ion-item>
+        <ion-label position="floating">Contraseña</ion-label>
+        <ion-input type={{inputType}} id="defaultLoginFormPassword" [(ngModel)]="loginPassword" required #password></ion-input>
+        <ion-button *ngIf="inputType == 'text'" fill="clear" slot="end" (click)='showHide()' style="height:32px;">
+            <ion-icon name="eye-off" style="font-size:32px;"></ion-icon>
+        </ion-button>
+        <ion-button *ngIf="inputType != 'text'" fill="clear" slot="end" (click)='showHide()' style="height:32px;">
+            <ion-icon name="eye" style="font-size:32px;"></ion-icon>
+        </ion-button>
+    </ion-item>
+    <!--<ion-item>
+        <ion-label position="floating">Ip address</ion-label>
+        <ion-input type="text" id="defaultip" [(ngModel)]="loginIp" #ip></ion-input>
+    </ion-item>-->
+
+<!--    <ion-item lines="none" >-->
+        <ion-button expand="full" color="secondary" style="text-transform: none;" type="submit" value="Acceder" (click)="login()">Acceder</ion-button>
+<!--    </ion-item>-->
+
+    <!-- Register -->
+    <ion-item lines="none">
+        <p style="font-size:12pt;">¿No tienes cuenta?
+            <span style="color: #2365db;" (click)="openRegister()">Únete</span>
+        </p>
+    </ion-item>
+    <button (click)="test()">test</button>
+</ion-content>

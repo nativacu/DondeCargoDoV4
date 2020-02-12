@@ -1,0 +1,42 @@
+page-register-plug {
+    #please-connect {
+        position: absolute;
+        background-color: #000;
+        opacity: 0.5;
+        width: 50%;
+        height: 50%;
+        z-index: 1;
+      }
+    
+      #please-connect p {
+          color: #fff;
+          font-weight: bold;
+          text-align: center;
+          position: relative;
+          font-size: 1.6em;
+          top: 30%;
+      }
+      
+      #ok{
+        width: 50%;
+        height: 50%;
+        z-index: 1;
+      }
+
+      #ok p{
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        font-size: 1.6em;
+        top: 30%;
+      }
+    
+      .scroll {
+          height: 50%;
+      }
+    
+      #map {
+          width: 50%;
+          height: 50%;
+      }
+}

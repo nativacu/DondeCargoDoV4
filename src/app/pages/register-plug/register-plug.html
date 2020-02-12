@@ -1,0 +1,87 @@
+<!--
+  Generated template for the RegisterPlugPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Información Adicional</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Nombre</ion-label>
+    <ion-input type='text' [(ngModel)]="stationName"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Dirección</ion-label>
+    <ion-input type='text' [(ngModel)]="stationDir"></ion-input>
+  </ion-item>
+
+  <ion-item>
+      <ion-label>Descripción</ion-label>
+      <ion-input type='text' [(ngModel)]="stationDesc"></ion-input>
+    </ion-item>
+  
+  <ion-item>
+    <ion-label>Horario de Inicio</ion-label>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="initTimeSlot"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+      <ion-label>Horario de Fin</ion-label>
+    <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="endTimeSlot"></ion-datetime>
+  </ion-item>
+
+    <ion-item>
+        <ion-label>Día de Inicio</ion-label>
+        <ion-select interface="popover" [(ngModel)]="dateInit">
+          <ion-select-option value="0">Lunes</ion-select-option>
+          <ion-select-option value="1">Martes</ion-select-option>
+          <ion-select-option value="2">Miercoles</ion-select-option>
+          <ion-select-option value="3">Jueves</ion-select-option>
+          <ion-select-option value="4">Viernes</ion-select-option>
+          <ion-select-option value="5">Sábado</ion-select-option>
+          <ion-select-option value="6">Domingo</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+        <ion-label>Día de Fin</ion-label>
+        <ion-select interface="popover" [(ngModel)]="dateEnd">
+          <ion-select-option value="0">Lunes</ion-select-option>
+          <ion-select-option value="1">Martes</ion-select-option>
+          <ion-select-option value="2">Miercoles</ion-select-option>
+          <ion-select-option value="3">Jueves</ion-select-option>
+          <ion-select-option value="4">Viernes</ion-select-option>
+          <ion-select-option value="5">Sábado</ion-select-option>
+          <ion-select-option value="6">Domingo</ion-select-option>
+        </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Tipo de Costo de Carga</ion-label>
+      <ion-select multiple="false" [(ngModel)]="tipo">
+          <ion-select-option value='Kw/h'>Kw/h</ion-select-option>
+          <ion-select-option value='Minuto'>Minuto</ion-select-option>
+      </ion-select>
+    </ion-item>
+    
+    <ion-item>
+        <ion-label>Costo (RD$)</ion-label>
+        <ion-input type="number" [(ngModel)]="number" required="true" min="1"></ion-input>
+    </ion-item>
+
+    
+    <ion-item lines="none">
+      <ion-button type="submit" expand="full" color="secondary" style="text-transform: none; margin-left: 10px;" (click)="uploadData()"><span class="glyphicon glyphicon-off"></span> Registrar</ion-button>
+    </ion-item>
+
+</ion-content>

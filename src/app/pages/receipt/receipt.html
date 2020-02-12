@@ -1,0 +1,42 @@
+<!--
+  Generated template for the ReceiptPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>Información Final</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content color="primary">
+
+  <div class="wrap">
+        <div>
+        <img src="../../assets/imgs/background_receipt.png"  height="35%" width="100%" alt="background">
+        <h1 class="text_over_image">Duración Total de la Carga <span><br>{{elapseTime}} </span> </h1>
+        </div>
+  </div>
+
+
+  <div class="container">
+      <ion-list class="text-center mb-5" >
+          <ion-item>
+            <ion-label><span slot="start"><ion-icon style="font-size: 1.5em;  margin-right: 15%; color: #16a085" name="cash"></ion-icon></span>Total a Pagar: RD${{monto}}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label><ion-icon style="font-size: 1.5em;  margin-right: 15%; color: #14b451" name="timer"></ion-icon>Tiempo de Inicio: {{startTime}}</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-label><ion-icon style="font-size: 1.5em;  margin-right: 15%; color: #c71414" name="timer"></ion-icon>Tiempo de Fin: {{endTime}}</ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ion-button expand="full" color="secondary">Proceder al Pago</ion-button>
+  </div>
+  
+</ion-content>

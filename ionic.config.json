@@ -1,0 +1,7 @@
+{
+  "name": "DondeCargoDo",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

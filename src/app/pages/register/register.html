@@ -1,0 +1,158 @@
+<div *ngIf="this.plt.checkPlatform(); then mobile else web">
+
+</div>
+<!--
+TODO change to just one template
+-->
+<ng-template #mobile>
+    <ion-header>
+        <ion-toolbar>
+            <ion-buttons slot="start">
+                <ion-back-button></ion-back-button>
+            </ion-buttons>
+            <ion-title>Crear Cuenta</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+      <ion-content>          
+        <!-- <ion-item> -->
+            <ion-avatar style="margin-top: 1%;">
+              <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg" style="border: 3px solid; color: #16a085; height: 20%; min-height: 120px; border-radius: 50%; display: block;
+                        margin-left: auto;
+                        margin-right: auto;" id="profilePic">
+                        <button ion-button small color="danger" (click)="selectPicture()" style="margin-top: -25px; margin-left: 80px;">
+                            <ion-icon name="camera"></ion-icon>
+                        </button>
+            </ion-avatar>
+          <!-- </ion-item> -->
+
+           <!-- Desde aquí está copiado -->
+
+          <div class="container">
+            <form [formGroup] = "registerForm">
+              <div>
+                <ion-item>
+                  <ion-label position="floating">Correo <span style="color:red;">*</span></ion-label>
+                  <ion-input type="email" id="defaultLoginFormEmail" [formControl]="registerForm.controls['email']" required> </ion-input>
+                </ion-item>
+              
+                <ion-item>
+                  <ion-label position="floating">Contraseña <span style="color:red;">*</span></ion-label>
+                  <ion-input type="password" id="defaultLoginFormPassword" [formControl]="registerForm.controls['password']" required></ion-input>
+                </ion-item>
+                            
+                <ion-item>
+                  <ion-label position="floating">Primer Nombre <span style="color:red;">*</span></ion-label>
+                  <ion-input type="text" name="first_name" id="first_name" [formControl]="registerForm.controls['fname']" required> </ion-input>
+                </ion-item> 
+              
+                <ion-item>
+                    <ion-label position="floating">Segundo Nombre</ion-label>
+                    <ion-input type="text" name="second_name" id="second_name" [formControl]="registerForm.controls['sname']"> </ion-input>
+                </ion-item> 
+          
+                <ion-item>
+                    <ion-label position="floating">Primer Apellido <span style="color:red;">*</span></ion-label> 
+                    <ion-input type="text" name="last_name" id="last_name" [formControl]="registerForm.controls['lname']" required> </ion-input>
+                </ion-item>
+          
+                <ion-item>
+                    <ion-label position="floating">Segundo Apellido</ion-label> 
+                    <ion-input type="text" name="second_lname" id="second_lname" [formControl]="registerForm.controls['slname']"> </ion-input>
+                </ion-item>
+          
+                <ion-item>
+                    <ion-label position="floating">Número de Teléfono <span style="color:red;">*</span></ion-label> 
+                    <ion-input type="tel" inputmode="tel" id="phone_number" [formControl]="registerForm.controls['telNumber']" required></ion-input>
+                </ion-item>
+          
+                <ion-item>
+                    <ion-label position="floating">Cédula de identidad <span style="color:red;">*</span></ion-label>
+                    <ion-input type="text" name="id" id="id" [formControl]="registerForm.controls['uniqueId']" required></ion-input>
+                </ion-item>
+              
+                <ion-item>
+                  <ion-label>Tipo de cuenta <span style="color:red;">*</span></ion-label>
+                  <ion-select multiple="true" [formControl]="registerForm.controls['accountType']" >
+                      <ion-select-option value='1'> Usuario Comercial</ion-select-option>
+                      <ion-select-option value='2'> Usuario Particular</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                
+                <ion-item lines="none">
+                  <ion-button type="submit" expand="full" color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!registerForm.valid" (click)="signup()"><span class="glyphicon glyphicon-off"></span> Registrarse</ion-button>
+                </ion-item>
+              </div>
+            </form>
+          </div>
+          
+      </ion-content>
+
+</ng-template>
+
+<ng-template #web>
+    <div class="container" style="margin-top:2%">
+        <p class="h4" style="text-align: center; font-size:15pt; margin-bottom: 1%">Crear Cuenta</p>
+        <ion-item>    
+          <input type="file" class="form-control-file" name="pic" accept="image/*">
+        </ion-item>
+    </div>
+    <div class="container">
+      <form [formGroup] = "registerForm">
+        <div>
+          <ion-item>
+            <ion-label position="floating">Correo <span style="color:red;">*</span></ion-label>
+            <ion-input type="email" id="defaultLoginFormEmail" [formControl]="registerForm.controls['email']" required> </ion-input>
+          </ion-item>
+        
+          <ion-item>
+            <ion-label position="floating">Contraseña <span style="color:red;">*</span></ion-label>
+            <ion-input type="password" id="defaultLoginFormPassword" [formControl]="registerForm.controls['password']" required></ion-input>
+          </ion-item>
+                      
+          <ion-item>
+            <ion-label position="floating">Primer Nombre <span style="color:red;">*</span></ion-label>
+            <ion-input type="text" name="first_name" id="first_name" [formControl]="registerForm.controls['fname']" required> </ion-input>
+          </ion-item> 
+        
+          <ion-item>
+              <ion-label position="floating">Segundo Nombre</ion-label>
+              <ion-input type="text" name="second_name" id="second_name" [formControl]="registerForm.controls['sname']"> </ion-input>
+          </ion-item> 
+    
+          <ion-item>
+              <ion-label position="floating">Primer Apellido <span style="color:red;">*</span></ion-label> 
+              <ion-input type="text" name="last_name" id="last_name" [formControl]="registerForm.controls['lname']" required> </ion-input>
+          </ion-item>
+    
+          <ion-item>
+              <ion-label position="floating">Segundo Apellido</ion-label> 
+              <ion-input type="text" name="second_lname" id="second_lname" [formControl]="registerForm.controls['slname']"> </ion-input>
+          </ion-item>
+    
+          <ion-item>
+              <ion-label position="floating">Número de Teléfono <span style="color:red;">*</span></ion-label> 
+              <ion-input type="tel" inputmode="tel" id="phone_number" [formControl]="registerForm.controls['telNumber']" required></ion-input>
+          </ion-item>
+    
+          <ion-item>
+              <ion-label position="floating">Cédula de identidad <span style="color:red;">*</span></ion-label>
+              <ion-input type="text" name="id" id="id" [formControl]="registerForm.controls['uniqueId']" required></ion-input>
+          </ion-item>
+        
+          <ion-item>
+            <ion-label>Tipo de cuenta <span style="color:red;">*</span></ion-label>
+            <ion-select multiple="true" [formControl]="registerForm.controls['accountType']" >
+                <ion-select-option value='1'> Usuario Comercial</ion-select-option>
+                <ion-select-option value='2'> Usuario Particular</ion-select-option>
+            </ion-select>
+          </ion-item>
+          
+          <ion-item lines="none">
+            <ion-button type="submit" expand="full" color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!registerForm.valid" (click)="signup()"><span class="glyphicon glyphicon-off"></span> Registrarse</ion-button>
+          </ion-item>
+        </div>
+      </form>
+    </div>
+
+</ng-template>

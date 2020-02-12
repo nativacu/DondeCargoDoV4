@@ -1,0 +1,35 @@
+page-receipt {
+    .wrap {
+        width: 100%;
+        height:auto;
+        margin: auto;
+        text-align:center;
+        position:relative;
+    }
+    .text_over_image {
+        position: absolute;
+        margin: auto;
+        top: 0;
+        left:0;
+        right:0;
+        bottom:0;
+        color:#fff;
+        height:35%;
+    }
+
+    ion-label{
+        font-size: large;
+    }
+
+    .container{
+        margin-top: 5%;
+    }
+    ion-item{
+        h2{
+            ion-icon{
+                text-align: end;
+            }
+        }
+
+    }
+}
