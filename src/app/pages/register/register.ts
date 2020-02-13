@@ -52,19 +52,6 @@ export class RegisterPage {
       ])],
       accountType: ['', Validators.required]
     });
-    this.socket.getMessages().subscribe((data: any) => {
-      switch (data.Command) {
-        case 'UserCreationSuccess':
-          this.fauth.currUser.next(data);
-          this.navCtrl.navigateRoot('map');
-          break;
-        case 'UserCreationFailure':
-          this.fauth.afAuth.auth.currentUser.delete();
-          break;
-        default:
-          break;
-      }
-    });
   }
 
   ionViewDidLoad() {
@@ -72,30 +59,33 @@ export class RegisterPage {
   }
 
   signup() {
-    let type = 0;
-    for (const x of this.registerForm.controls.accountType.value) {
-      type += +x;
-    }
-    this.fauth.doRegister({email: this.registerForm.controls.email.value, password: this.registerForm.controls.password.value}).then(
-      (user: firebase.User) => {
-        let slname = this.registerForm.controls.slname.value;
-        let sname = this.registerForm.controls.sname.value;
-        if (sname === null) {
-          sname = '0';
-        }
-        if (slname === null) {
-          slname = '0';
-        }
-        // TODO: needs to check about t_usuario
-        const dataToSend = {Command: 'CrearUser', Cedula: this.registerForm.controls.uniqueId.value , PrimerNombre: this.registerForm.controls.fname.value, SegundoNombre: sname, PrimerApellido: this.registerForm.controls.lname.value, SegundoApellido: slname
-        , t_usuario: type, Foto: 0, Email: this.registerForm.controls.email.value, telefono: this.registerForm.controls.telNumber.value};
-        this.socket.sendMessage(JSON.stringify(dataToSend));
-      },
-      (error) => {
-        window.alert(error);
+    this.socket.startConnection("").then(()=>{
+      let type = 0;
+      for (const x of this.registerForm.controls.accountType.value) {
+        type += +x;
       }
-    );
-
+      this.fauth.doRegister({email: this.registerForm.controls.email.value, password: this.registerForm.controls.password.value}).then(
+        (user: firebase.User) => {
+          let slname = this.registerForm.controls.slname.value;
+          let sname = this.registerForm.controls.sname.value;
+          if (sname === null) {
+            sname = '0';
+          }
+          if (slname === null) {
+            slname = '0';
+          }
+        // TODO: needs to check about t_usuario
+          const dataToSend = {Command: 'CrearUser', Cedula: this.registerForm.controls.uniqueId.value , PrimerNombre: this.registerForm.controls.fname.value, SegundoNombre: sname, PrimerApellido: this.registerForm.controls.lname.value, SegundoApellido: slname
+          , t_usuario: type, Foto: 0, Email: this.registerForm.controls.email.value, telefono: this.registerForm.controls.telNumber.value};
+          this.socket.sendMessage(JSON.stringify(dataToSend));
+        },
+        (error) => {
+          window.alert(error);
+        }
+      );
+    }, (error) =>{
+      window.alert(error);
+    });
   }
 
   selectPicture() {
@@ -124,6 +114,22 @@ export class RegisterPage {
 
 
 
+  }
+
+  getMessages(){
+    this.socket.getMessages().subscribe((data: any) => {
+      switch (data.Command) {
+        case 'UserCreationSuccess':
+          this.fauth.currUser.next(data);
+          this.navCtrl.navigateRoot('map');
+          break;
+        case 'UserCreationFailure':
+          this.fauth.afAuth.auth.currentUser.delete();
+          break;
+        default:
+          break;
+      }
+    });
   }
 
 }
