@@ -34,6 +34,7 @@ import { FirebaseProvider } from './services/firebase/firebase';
 import { PlatformProvider } from './services/platform/platform';
 import { WebsocketProvider } from './services/websocket/websocket';
 import { firebase } from '../environments/environment';
+import { Network } from '@ionic-native/network/ngx';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { firebase } from '../environments/environment';
       FirebaseProvider,
       PlatformProvider,
       WebsocketProvider,
+      Network,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

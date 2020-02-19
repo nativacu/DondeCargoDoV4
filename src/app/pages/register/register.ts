@@ -59,7 +59,7 @@ export class RegisterPage {
   }
 
   signup() {
-    this.socket.startConnection("").then(()=>{
+    this.socket.startConnection('').then(() => {
       let type = 0;
       for (const x of this.registerForm.controls.accountType.value) {
         type += +x;
@@ -83,7 +83,7 @@ export class RegisterPage {
           window.alert(error);
         }
       );
-    }, (error) =>{
+    }, (error) => {
       window.alert(error);
     });
   }
@@ -116,7 +116,7 @@ export class RegisterPage {
 
   }
 
-  getMessages(){
+  getMessages() {
     this.socket.getMessages().subscribe((data: any) => {
       switch (data.Command) {
         case 'UserCreationSuccess':

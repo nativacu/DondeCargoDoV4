@@ -9,23 +9,23 @@ export class ConnectivityProvider {
 
   onDevice: boolean;
 
-  constructor(public platform: Platform, private network: Network){
+  constructor(public platform: Platform, private network: Network) {
     this.onDevice = this.platform.is('mobile');
   }
 
   isOnline(): boolean {
-    if(this.onDevice && this.network.Connection){
+    if (this.onDevice && this.network.Connection) {
       return this.network.Connection !== Connection.NONE;
     } else {
-      return navigator.onLine; 
+      return navigator.onLine;
     }
   }
 
   isOffline(): boolean {
-    if(this.onDevice && this.network.Connection){
+    if (this.onDevice && this.network.Connection) {
       return this.network.Connection === Connection.NONE;
     } else {
-      return !navigator.onLine;   
+      return !navigator.onLine;
     }
   }
 

@@ -21,11 +21,14 @@ export class WebsocketProvider {
   startConnection(ipAddress: string) {
     return new Promise<any>( (resolve, reject) => {
       ipAddress = ipAddress ? ipAddress : '190.113.73.11';
+      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+        resolve();
+      }
       this.socket = new WebSocket('ws://' + ipAddress + ':443/');
       // this.socket = new WebSocket('ws://190.113.73.11:443');
 
       this.observable = new Observable(observer => {
-        this.socket.onmessage = function(data) {
+        this.socket.onmessage = (data) => {
           console.log(data);
           observer.next(JSON.parse(data.data));
         };

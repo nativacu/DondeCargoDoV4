@@ -67,7 +67,7 @@ export class AppComponent {
         this.imageSrc = 'https://www.stickpng.com/assets/images/585e4bf3cb11b227491c339a.png';
         this.userName = 'Pedro';
         this.lname = 'Pérez';
-        this.email = 'pedrop@gmail.com';
+        this.email = 'ok';
         this.phoneNumber = '809-000-0000';
         this.accountType = 1;
       }
@@ -84,13 +84,13 @@ export class AppComponent {
       statusBar.styleDefault();
       splashScreen.hide();
 
-      // if (isCordovaAvailable()) {
-      OneSignal.startInit(oneSignalAppId, sender_id);
-      OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
-      OneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
-      OneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
-      OneSignal.endInit();
-      // }
+      if (this.platform.is('mobile')) {
+        OneSignal.startInit(oneSignalAppId, sender_id);
+        OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
+        OneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
+        OneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
+        OneSignal.endInit();
+       }
 
     });
   }
