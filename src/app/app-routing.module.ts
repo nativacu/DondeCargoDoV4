@@ -21,7 +21,11 @@ const routes: Routes = [
   { path: 'charge-confirmation', component: ChargeConfirmationPage},
   { path: 'transaction-list', component: TransactionListPage},
   { path: 'reservation', component: ReservationPage},
-  { path: 'add-plug/:id', component: AddPlugPage}
+  { path: 'add-plug/:id', component: AddPlugPage},  {
+    path: 'lugar',
+    loadChildren: () => import('./models/lugar/lugar.module').then( m => m.LugarPageModule)
+  }
+
 ];
 
 @NgModule({
