@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { LoginPage } from './pages/login/login';
 import { MapPage } from './pages/map/map';
 import { ReceiptPage } from './pages/receipt/receipt';
@@ -11,27 +11,23 @@ import { TransactionListPage } from './pages/transaction-list/transaction-list';
 import { ReservationPage } from './pages/reservation/reservation';
 import { AddPlugPage } from './pages/add-plug/add-plug';
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginPage},
-  { path: 'map', component: MapPage},
-  { path: 'receipt', component: ReceiptPage},
-  { path: 'register', component: RegisterPage},
-  { path: 'register-plug', component: RegisterPlugPage},
-  { path: 'charging-menu', component: ChargingMenuPage},
-  { path: 'charge-confirmation', component: ChargeConfirmationPage},
-  { path: 'transaction-list', component: TransactionListPage},
-  { path: 'reservation', component: ReservationPage},
-  { path: 'add-plug/:id', component: AddPlugPage},  {
-    path: 'lugar',
-    loadChildren: () => import('./models/lugar/lugar.module').then( m => m.LugarPageModule)
-  }
-
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'login', component: LoginPage},
+    { path: 'map', component: MapPage},
+    { path: 'receipt', component: ReceiptPage},
+    { path: 'register', component: RegisterPage},
+    { path: 'register-plug', component: RegisterPlugPage},
+    { path: 'charging-menu', component: ChargingMenuPage},
+    { path: 'charge-confirmation', component: ChargeConfirmationPage},
+    { path: 'transaction-list', component: TransactionListPage},
+    { path: 'reservation', component: ReservationPage},
+    { path: 'add-plug/:id', component: AddPlugPage}
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes)
-  ],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes)
+    ],
+    exports: [RouterModule]
 })
 export class AppRoutingModule { }

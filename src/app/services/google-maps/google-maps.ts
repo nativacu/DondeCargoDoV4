@@ -3,6 +3,7 @@ import { ConnectivityProvider } from '../connectivity/connectivity';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NavController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
+import { Lugar } from '../../models/lugar';
 
 declare var google;
 
@@ -14,24 +15,18 @@ export class GoogleMapsProvider {
   map: any;
   mapInitialised = false;
   navController: any;
-  mapLoaded: any;
-  mapLoadedObserver: any;
   markers: any = [];
-  chargers: any;
   locationMarker: any;
   locations: any = [];
   apiKey: string;
-  positionSubscription: any;
-  locationJson: any;
-  selected = false;
-  chargerObserver: BehaviorSubject<any>;
+  chargerObserver: BehaviorSubject<Lugar>;
   infoWindow: BehaviorSubject<any>;
 
   constructor(public connectivityService: ConnectivityProvider, private geolocation: Geolocation) {
 
   }
 
-  init(mapElement: any, pleaseConnect: any, navCtrl: NavController, chargers: any): Promise<any> {
+  init(mapElement: any, pleaseConnect: any, navCtrl: NavController, chargers: Array<Lugar>): Promise<any> {
 
     this.locations = chargers;
     this.navController = navCtrl;
@@ -54,7 +49,7 @@ export class GoogleMapsProvider {
         this.disableMap();
 
         if (this.connectivityService.isOnline()) {
-          
+
           window['mapInit'] = () => {
 
             this.initMap().then(() => {
@@ -62,31 +57,26 @@ export class GoogleMapsProvider {
             }).catch();
 
             this.enableMap();
-          }
+          };
 
-          const script = document.createElement("script");
+          const script = document.createElement('script');
           script.id = 'googleMaps';
-          
-          if(this.apiKey){
+
+          if (this.apiKey) {
             script.src = 'http://maps.googleapis.com/maps/api/js?key=' + this.apiKey + '&callback=mapInit';
-          } 
-          
-          else {
-            script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';       
+          } else {
+            script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
           }
 
-          document.body.appendChild(script);  
+          document.body.appendChild(script);
 
-        } 
-      }
-      else {
+        }
+      } else {
 
-        if(this.connectivityService.isOnline()){
+        if (this.connectivityService.isOnline()) {
           this.initMap();
           this.enableMap();
-        }
-
-        else {
+        } else {
           this.disableMap();
         }
 
@@ -106,17 +96,17 @@ export class GoogleMapsProvider {
 
       this.geolocation.getCurrentPosition().then((position) => {
 
-        let latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
-        let mapOptions = {
+        const mapOptions = {
           center: latLng,
           zoom: 18,
-          //Uncomment to disable satelite view
-          mapTypeControl: false,  
-          //Uncomment to disable street view
-          streetViewControl: false, 
+          // Uncomment to disable satelite view
+          mapTypeControl: false,
+          // Uncomment to disable street view
+          streetViewControl: false,
           mapTypeId: google.maps.MapTypeId.ROADMAP
-        }
+        };
 
         this.map = new google.maps.Map(this.mapElement, mapOptions);
         console.log(this.map.center);
@@ -126,7 +116,7 @@ export class GoogleMapsProvider {
         this.startTracking();
         resolve(true);
 
-      }).catch((err)=>{
+      }).catch((err) => {
         console.log(err);
       });
 
@@ -136,16 +126,16 @@ export class GoogleMapsProvider {
 
   disableMap(): void {
 
-    if(this.pleaseConnect){
-      this.pleaseConnect.style.display = "block";
+    if (this.pleaseConnect) {
+      this.pleaseConnect.style.display = 'block';
     }
 
   }
 
   enableMap(): void {
 
-    if(this.pleaseConnect){
-      this.pleaseConnect.style.display = "none";
+    if (this.pleaseConnect) {
+      this.pleaseConnect.style.display = 'none';
     }
 
   }
@@ -154,15 +144,14 @@ export class GoogleMapsProvider {
 
     document.addEventListener('online', () => {
 
-      console.log("online");
+      console.log('online');
 
       setTimeout(() => {
 
-        if(typeof google == "undefined" || typeof google.maps == "undefined"){
+        if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
           this.loadGoogleMaps().catch();
-        } 
-        else {
-          if(!this.mapInitialised){
+        } else {
+          if (!this.mapInitialised) {
             this.initMap();
           }
 
@@ -175,25 +164,23 @@ export class GoogleMapsProvider {
 
     document.addEventListener('offline', () => {
 
-      console.log("offline");
-
       this.disableMap();
 
     }, false);
 
   }
 
-  public addMarker(latLng: any){
-    let scaledSize = new google.maps.Size(45, 45);
-    let url =  '../../assets/imgs/active-plug.svg';
-    
-    let image = {
+  public addMarker(latLng: any) {
+    const scaledSize = new google.maps.Size(45, 45);
+    const url =  '../../assets/imgs/active-plug.svg';
+
+    const image = {
       url,
       scaledSize
-    }
-    
+    };
+
     new google.maps.Marker({
-      map: this.map,  
+      map: this.map,
       position: latLng,
       icon: image
     });
@@ -201,96 +188,94 @@ export class GoogleMapsProvider {
 
   addCurrentLocationMarker(lat: number, lng: number): void {
 
-    let latLng = new google.maps.LatLng(lat, lng);
+    const latLng = new google.maps.LatLng(lat, lng);
 
-    var icon = {
+    const icon = {
       path: google.maps.SymbolPath.CIRCLE,
       fillColor: 'DeepSkyBlue',
       fillOpacity: 10,
       strokeOpacity: 0.2,
       scale: 8,
-     
-    }
-    
-    let marker = new google.maps.Marker({
-      map: this.map,  
+
+    };
+
+    const marker = new google.maps.Marker({
+      map: this.map,
       position: latLng,
-      icon: icon
+      icon
     });
-  
+
 
     this.locationMarker = marker;
 
   }
 
-  addMarkers(){
-    
+  addMarkers() {
+
     length =  this.locations.length;
-    
 
-    for (var i=0; i<length; i++) {
 
-      var charger =  this.locations[i];
-      var image;  
-      var state = "Activo";
+    for (let i = 0; i < length; i++) {
 
-      var contentString = this.setContentString(charger);      
+      const charger =  this.locations[i];
+      let image;
+      const contentString = this.setContentString(charger);
 
-      let infoWindow = new google.maps.InfoWindow({
+      const infoWindow = new google.maps.InfoWindow({
         content: contentString
       });
       image = this.setMarkerIcon(charger);
 
-      let marker = new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: {lat: +charger.Latitud, lng: +charger.Longitud},
         map: this.map,
-        icon: image     
+        icon: image
       });
-      
-      let chargerObserver = this.chargerObserver;
-      let current = this.infoWindow;
-      let markers = this.markers;
-      let locations = this.locations;
+
+      const chargerObserver = this.chargerObserver;
+      const current = this.infoWindow;
+      const markers = this.markers;
+      const locations = this.locations;
 
       marker.addListener('click', function() {
-        let index = markers.indexOf(marker); 
-         
-        if(chargerObserver.value != null){
+        const index = markers.indexOf(marker);
+
+        if (chargerObserver.value != null) {
           current.value.close();
         }
-       
+
         current.next(infoWindow);
-        infoWindow.open(this.map,marker);
+        infoWindow.open(this.map, marker);
         chargerObserver.next(locations[index]);
         infoWindow.addListener('closeclick', function() {
-          var button = document.getElementById("reserveButton");
-          var map = document.getElementById("map");
-          map.style.height = "100%";
+          const button = document.getElementById('reserveButton');
+          const map = document.getElementById('map');
+          map.style.height = '100%';
           button.hidden = true;
         }
         );
-      }); 
-      this.markers.push(marker);  
-      
+      });
+      this.markers.push(marker);
+
     }
   }
 
-  
 
-  startTracking(){
-    let watch = this.geolocation.watchPosition();
+
+  startTracking() {
+    const watch = this.geolocation.watchPosition();
     watch.subscribe((data) => {
       this.locationMarker.setMap(null);
       this.addCurrentLocationMarker(data.coords.latitude, data.coords.longitude);
     });
   }
 
-  setMarkerIcon(charger){
+  setMarkerIcon(charger) {
     let image: any;
     let url: string;
-    let scaledSize = new google.maps.Size(35, 35);;
+    const scaledSize = new google.maps.Size(35, 35);
     charger.is_operational = 1;
-    if(charger.is_operational === 1){
+    if (charger.is_operational === 1) {
       url = 'data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53%0D%0AMy5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNy40NSAyMy42MSI+PGRlZnM+PHN0eWxlPi5j%0D%0AbHMtMSwuY2xzLTN7ZmlsbDojM2RiZjI2O30uY2xzLTEsLmNscy0ye3N0cm9rZTojZmZmO3N0cm9r%0D%0AZS1taXRlcmxpbWl0OjEwO3N0cm9rZS13aWR0aDowLjI1cHg7fS5jbHMtMiwuY2xzLTR7ZmlsbDoj%0D%0AZmZmO308L3N0eWxlPjwvZGVmcz48dGl0bGU+YWN0aXZlLXBsdWc8L3RpdGxlPjxwYXRoIGNsYXNz%0D%0APSJjbHMtMSIgZD0iTTEyLjQuNEE4LjUyLDguNTIsMCwwLDAsMy44LDguODVjMCw3LjUzLDguNiwx%0D%0ANC44Nyw4LjYsMTQuODdTMjEsMTYuMjQsMjEsOC44NUE4LjUyLDguNTIsMCwwLDAsMTIuNC40WiIg%0D%0AdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTMuNjcgLTAuMjcpIi8+PHBhdGggY2xhc3M9ImNscy0yIiBk%0D%0APSJNMTIuNCwyQTYuNzYsNi43NiwwLDAsMCw1LjgsOC45MmMwLDYuMTYsNi42LDEyLjE2LDYuNiwx%0D%0AMi4xNlMxOSwxNSwxOSw4LjkyQTYuNzYsNi43NiwwLDAsMCwxMi40LDJaIiB0cmFuc2Zvcm09InRy%0D%0AYW5zbGF0ZSgtMy42NyAtMC4yNykiLz48cmVjdCBjbGFzcz0iY2xzLTMiIHg9IjYuMDgiIHk9IjQu%0D%0ANzciIHdpZHRoPSIxLjUiIGhlaWdodD0iNi4yMSIvPjxyZWN0IGNsYXNzPSJjbHMtMyIgeD0iOS45%0D%0AMSIgeT0iNC45OCIgd2lkdGg9IjEuNSIgaGVpZ2h0PSI1LjgzIi8+PHJlY3QgY2xhc3M9ImNscy0z%0D%0AIiB4PSI0Ljg3IiB5PSI2Ljk0IiB3aWR0aD0iMS4yMSIgaGVpZ2h0PSIxLjI5Ii8+PGVsbGlwc2Ug%0D%0AY2xhc3M9ImNscy0zIiBjeD0iOC43NCIgY3k9IjEzLjY0IiByeD0iMC45MiIgcnk9IjEuMTciLz48%0D%0AcmVjdCBjbGFzcz0iY2xzLTQiIHg9IjcuMjQiIHk9IjE0LjI3IiB3aWR0aD0iMi44OCIgaGVpZ2h0%0D%0APSIxLjIxIi8+PC9zdmc+';
     }
 
@@ -301,13 +286,13 @@ export class GoogleMapsProvider {
     image = {
       url,
       scaledSize
-    }
-    
+    };
+
     return image;
   }
 
-  disableDefaultLocations(){
-    var styles = {
+  disableDefaultLocations() {
+    const styles = {
       default: null,
       hide: [
         {
@@ -322,65 +307,63 @@ export class GoogleMapsProvider {
       ]
     };
 
-    this.map.setOptions({styles: styles['hide']});
+    this.map.setOptions({styles: styles.hide});
   }
 
-  setContentString(charger: any){
-    var state = "Activo";
-    if(charger.is_operational === 0){
-      state = "Inactivo";
+  setContentString(charger: any) {
+    let state = 'Activo';
+    if (charger.is_operational === 0) {
+      state = 'Inactivo';
     }
 
     const isOpen = this.checkWorkingHours(charger);
     let open: string;
 
-    open = (isOpen ? "Abrierto ahora": "Cerrado");
+    open = (isOpen ? 'Abrierto ahora' : 'Cerrado');
 
-    var contentString = '<div id="content">'+
-          '<div id="siteNotice">'+
-          '</div>'+
-          '<h6 id="firstHeading" class="firstHeading">'+charger.Nombre +'</h6>'+
-          '<div id="bodyContent">'+ '<p>'+ open + '</p>' + state +'</b><br/><b> Horario: </b>'+ charger.Hora_Inicio_Operaciones + ' a ' + charger.Hora_Fin_Operaciones + '</br>'+ 
-          charger.Dia_Inicio_Operaciones + '-' + charger.Dia_Fin_Operaciones + '</br>'+
-          '<b>Tipo de cobro: </b>'+ charger.TipoCostoCarga ;
-          
-          if (charger.TipoCosto != "Gratis" && charger.TipoCargador != "No afiliado"){
+    let contentString = '<div id="content">' +
+          '<div id="siteNotice">' +
+          '</div>' +
+          '<h6 id="firstHeading" class="firstHeading">' + charger.Nombre + '</h6>' +
+          '<div id="bodyContent">' + '<p>' + open + '</p>' + state + '</b><br/><b> Horario: </b>' + charger.Hora_Inicio_Operaciones + ' a ' + charger.Hora_Fin_Operaciones + '</br>' +
+          charger.Dia_Inicio_Operaciones + '-' + charger.Dia_Fin_Operaciones + '</br>' +
+          '<b>Tipo de cobro: </b>' + charger.TipoCostoCarga ;
+
+    if (charger.TipoCosto !== 'Gratis') {
             contentString += '</br><b>Precio: </b>' + charger.CostoCarga + ' RD$/' + charger.TipoCostoCarga;
-          } 
-        
-          contentString += '</br>' +  
-          charger.Descripcion + 
-          '</div>'+
+          }
+
+    contentString += '</br>' +
+          charger.Descripcion +
+          '</div>' +
           '</div>';
-           
+
 
     return contentString;
   }
 
-  checkWorkingHours(charger: any): boolean{
+  checkWorkingHours(charger: any): boolean {
     const currentDate = new Date();
     const weekDate = currentDate.getDay();
-    const time = currentDate.getHours() + (currentDate.getMinutes()/60);
+    const time = currentDate.getHours() + (currentDate.getMinutes() / 60);
     if (charger.Hora_Inicio_Operaciones === undefined) {
       return;
     }
-    console.log(charger)
-    let str: string = charger.Hora_Inicio_Operaciones
+    let str: string = charger.Hora_Inicio_Operaciones;
     let startHour = 0;
-    console.log(str);
-    startHour = +str.substr(0, str.search(':')) + +str.substr(str.search(':') + 1, 2)/60;
-    str = charger.Hora_Fin_Operaciones
+    startHour = +str.substr(0, str.search(':')) + +str.substr(str.search(':') + 1, 2) / 60;
+    str = charger.Hora_Fin_Operaciones;
     let endHour = 0;
-    endHour = +str.substr(0, str.search(':')) + +str.substr(str.search(':') + 1, 2)/60;
+    endHour = +str.substr(0, str.search(':')) + +str.substr(str.search(':') + 1, 2) / 60;
     const chargerWeekStart = this.getWeekDayByNumber(charger.Dia_Inicio_Operaciones);
     const chargerWeekEnd = this.getWeekDayByNumber(charger.Dia_Fin_Operaciones);
     let isOpen = false;
 
-    //console.log("Date " + weekDate + " time" + time);
+    // console.log("Date " + weekDate + " time" + time);
     if ((weekDate >= chargerWeekStart && weekDate <= chargerWeekEnd && chargerWeekStart <= chargerWeekEnd) ||
-    ((weekDate <= chargerWeekEnd || weekDate >= chargerWeekStart) && chargerWeekStart > chargerWeekEnd)){
-      //revisar si eso es string
-      if(time >= startHour && time < endHour){
+    ((weekDate <= chargerWeekEnd || weekDate >= chargerWeekStart) && chargerWeekStart > chargerWeekEnd)) {
+      // revisar si eso es string
+      if (time >= startHour && time < endHour) {
         isOpen = true;
       }
 
@@ -390,35 +373,45 @@ export class GoogleMapsProvider {
 
   }
 
-  getWeekDayByNumber(weekDay: string): number{
+  getWeekDayByNumber(weekDay: string): number {
     let numValue: number;
-    switch (weekDay){
-      case "Domingo": {
-        numValue = 0;
+    enum days {
+      Domingo,
+      Lunes,
+      Martes,
+      Miercoles,
+      Jueves,
+      Viernes,
+      Sabado
+    }
+
+    switch (weekDay) {
+      case 'Domingo': {
+        numValue = days.Domingo;
         break;
       }
-      case "Lunes":{
-        numValue = 1;
+      case 'Lunes': {
+        numValue = days.Lunes;
         break;
       }
-      case "Martes":{
-        numValue = 2;
+      case 'Martes': {
+        numValue = days.Martes;
         break;
       }
-      case "Miercoles":{
-        numValue = 3;
+      case 'Miercoles': {
+        numValue = days.Miercoles;
         break;
       }
-      case "Jueves":{
-        numValue = 4;
+      case 'Jueves': {
+        numValue = days.Jueves;
         break;
       }
-      case "Viernes":{
-        numValue = 5;
+      case 'Viernes': {
+        numValue = days.Viernes;
         break;
       }
-      case "Sabado":{
-        numValue = 6;
+      case 'Sabado': {
+        numValue = days.Sabado;
         break;
       }
       default: {
@@ -429,10 +422,10 @@ export class GoogleMapsProvider {
     return numValue;
   }
 
-  getMapCenter(){
-    
+  getMapCenter() {
 
-    //return this.map.center;
+
+    // return this.map.center;
   }
 
 

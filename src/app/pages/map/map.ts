@@ -5,6 +5,7 @@ import {GoogleMapsProvider} from '../../services/google-maps/google-maps';
 import {HttpRequestProvider} from '../../services/http-request/http-request';
 import {AuthProvider} from '../../services/auth/auth';
 import {WebsocketProvider} from '../../services/websocket/websocket';
+import { Lugar } from '../../models/lugar';
 
 @Component({
     selector: 'page-map',
@@ -12,17 +13,15 @@ import {WebsocketProvider} from '../../services/websocket/websocket';
 })
 
 export class MapPage {
-
-
     @ViewChild('map', {static: false}) mapElement: ElementRef;
     @ViewChild('pleaseConnect', {static: false}) pleaseConnect: ElementRef;
 
-    data: any;
-    currentCharger: any;
+    data: Array<Lugar>;
+    currentCharger: Lugar;
     showButton: boolean;
     adminButton: boolean;
-    userId: any;
-    // tipos de cargadores
+    userId: number;
+
     constructor(public navCtrl: NavController,
                 public maps: GoogleMapsProvider,
                 public http: HttpRequestProvider,
@@ -52,7 +51,6 @@ export class MapPage {
                     break;
                 case 'ChargeEndSecured':
                     // fin de la carga
-                    console.log(data.Monto);
                     this.navCtrl.pop();
                     break;
                 case 'TransactionRequest':
@@ -90,7 +88,7 @@ export class MapPage {
     configurePlug() {
 
     }
-    chargersInit(data) {
+    chargersInit(data: Array<Lugar>) {
         this.data = data;
         this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement, this.navCtrl, this.data);
 
@@ -109,20 +107,10 @@ export class MapPage {
                 map.style.height = (!this.adminButton ? '93%' : '77%');
                 button.hidden = false;
                 button.style.color = 'white';
-                console.log(currentCharger.type);
                 if (this.adminButton) {
-                    buttonadd.hidden = false;
-                    buttonconf.hidden = false;
+                    buttonadd.hidden = buttonconf.hidden = false;
                 } else {
-                    buttonadd.hidden = true;
-                    buttonconf.hidden = true;
-                }
-                if (!currentCharger.is_operational || currentCharger.type === 'No afiliado') {
-                    button.setAttribute('disabled', 'disabled');
-                } else {
-                    if (button.hasAttribute('disabled')) {
-                        button.removeAttribute('disabled');
-                    }
+                    buttonadd.hidden =  buttonconf.hidden = true;
                 }
             }
         });
@@ -138,17 +126,17 @@ export class MapPage {
     }
 
     private transactionRequestLogic(data: any) {
-        for (const ok of data.Transactions) {
-            if (ok.Monto) {
-                const dateInit: Array<string> = ok.Fecha_Inicio.split('-');
-                const hourInit: Array<string> = ok.Hora_Inicio.split(':');
-                const initDate: any = new Date(+dateInit[0], +dateInit[1] - 1, +dateInit[2], +hourInit[0], +hourInit[1]);
-                const dateEnd: Array<string> = ok.Fecha_Fin.split('-');
-                const hourEnd: Array<string> = ok.Hora_Fin.split(':');
-                const endDate: any = new Date(+dateEnd[0], +dateEnd[1] - 1, +dateEnd[2], +hourEnd[0], +hourEnd[1]);
-                ok.Date = new Date(endDate - initDate);
+        for (const transaction of data.Transactions) {
+            if (transaction.Monto) {
+                const dateInit: Array<string> = transaction.Fecha_Inicio.split('-');
+                const hourInit: Array<string> = transaction.Hora_Inicio.split(':');
+                const initDate: Date = new Date(+dateInit[0], +dateInit[1] - 1, +dateInit[2], +hourInit[0], +hourInit[1]);
+                const dateEnd: Array<string> = transaction.Fecha_Fin.split('-');
+                const hourEnd: Array<string> = transaction.Hora_Fin.split(':');
+                const endDate: Date = new Date(+dateEnd[0], +dateEnd[1] - 1, +dateEnd[2], +hourEnd[0], +hourEnd[1]);
+                transaction.Date = new Date(endDate.getDate() - initDate.getDate());
             } else {
-                ok.Date = new Date();
+                transaction.Date = new Date();
             }
         }
         return data;
