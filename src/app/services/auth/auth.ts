@@ -11,47 +11,47 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthProvider {
-  email:string;
+  email: string;
   currUser: BehaviorSubject<any>;
   constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
     this.currUser = new BehaviorSubject(null);
     console.log('Hello AuthProvider Provider');
-    this.email = "placeholder";
+    this.email = 'placeholder';
   }
-  doRegister(value){
+  doRegister(value) {
    return new Promise<any>((resolve, reject) => {
      this.afAuth.auth.createUserWithEmailAndPassword(value.email, value.password)
      .then(
        res => resolve(res),
-       err => reject(err))
-   })
+       err => reject(err));
+   });
   }
 
-  doLogin(value){
+  doLogin(value) {
    return new Promise<any>((resolve, reject) => {
     this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
      .then(
        res => {
-         this.email = value.email
-         resolve(res)
+         this.email = value.email;
+         resolve(res);
         },
-       err => reject(err))
-   })
+       err => reject(err));
+   });
   }
 
-	doLogout(){
+  doLogout() {
     return new Promise((resolve, reject) => {
       this.afAuth.auth.signOut()
       .then(() => {
         resolve();
       }).catch((error) => {
-        reject();
+        reject(error);
       });
-    })
+    });
   }
 
-  getUser(){
-    return this.afAuth.user
+  getUser() {
+    return this.afAuth.user;
   }
 
 }
