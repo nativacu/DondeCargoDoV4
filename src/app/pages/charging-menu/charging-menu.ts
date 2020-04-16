@@ -106,8 +106,8 @@ export class ChargingMenuPage {
                 {
                     text: 'Sí',
                     handler: () => {
-                        console.log(JSON.stringify({Command: 'ChargingCancellation', Email: this.user}));
-                        this.socket.sendMessage(JSON.stringify({Command: 'ChargingCancellation', email: this.user}));
+                        console.log({Command: 'ChargingCancellation', Email: this.user});
+                        this.socket.sendMessage({Command: 'ChargingCancellation', email: this.user});
                     }
                 }
             ]
