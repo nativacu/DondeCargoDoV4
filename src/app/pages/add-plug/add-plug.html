@@ -5,9 +5,9 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Información sobre el plug</ion-title>
-  </ion-toolbar>
+  <ion-navbar color="secondary">
+    <ion-title>Informacion sobre el plug</ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding>
@@ -16,9 +16,8 @@
       <ion-label>Serial</ion-label>
       <ion-input type='text' [formControl] = "serialForm.controls['serial']"></ion-input>
     </ion-item>
-    <ion-item lines="no-lines">
-        <ion-button type="submit" color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!serialForm.valid" (click)="upload(1)"><span class="glyphicon glyphicon-off"></span>Registrar y completar creacion</ion-button>
-        <ion-button type="submit" float-right color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!serialForm.valid" (click)="upload(2)"><span class="glyphicon glyphicon-off"></span>Registrar y agregar otro serial</ion-button>
+    <ion-item no-lines>
+        <button type="submit" ion-button default color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!serialForm.valid" (click)="upload(1)"><span class="glyphicon glyphicon-off"></span>Registrar</button>
     </ion-item>
   </form>
 </ion-content>
