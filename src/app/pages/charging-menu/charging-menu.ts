@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, IonicModule } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 import { WebsocketProvider } from '../../services/websocket/websocket';
 import { AuthProvider } from '../../services/auth/auth';
 import {NgModule} from '@angular/core';
@@ -30,22 +30,25 @@ export class ChargingMenuPage {
     current = 1;
     max = 100;
     duration = 20; // 0 si el usuario no puso maximo
-    background = '#eaeaea'; // #eaeaea si el usuario puso maximo
+    background = '#eaeaea'; //    #eaeaea si el usuario puso maximo
 
-    constructor(public navCtrl: NavController, public navParams: NavParams,
+    constructor(public navCtrl: NavController,
                 private socket: WebsocketProvider,
                 private afauth: AuthProvider,
                 private alertCtrl: AlertController) {
-        this.startTime = (navParams.get('Date')) ? navParams.get('Date') : new Date();
+        // TODO send Date
+        // this.startTime = (navParams.get('Date')) ? navParams.get('Date') : new Date();
         // this.startTime = new Date();
-        console.log(Date());
         setInterval(this.counter.bind(this), 1000);
 
         setInterval(this.progress.bind(this), 50);
 
-        afauth.getUser().subscribe((usr) => {
-            this.user = usr.email;
-        });
+        if (afauth.getUser()) {
+            afauth.getUser().subscribe((usr) => {
+                this.user = usr.email;
+            });
+        }
+
         this.socket.getMessages().subscribe((data) => {
             switch (data.Command) {
                 case 'ChargeEndSecured':

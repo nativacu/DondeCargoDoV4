@@ -64,17 +64,7 @@ import { Network } from '@ionic-native/network/ngx';
         AngularFireAuthModule
     ],
     exports: [
-        AddPlugPage,
-        ChargeConfirmationPage,
-        ChargingMenuPage,
-        LoginPage,
-        MapPage,
-        PlacePlugPage,
-        ReceiptPage,
-        RegisterPage,
-        RegisterPlugPage,
-        ReservationPage,
-        TransactionListPage
+
     ],
   providers: [
     StatusBar,

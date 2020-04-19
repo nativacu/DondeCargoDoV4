@@ -54,7 +54,7 @@ export class LoginPage implements OnInit {
     await this.loading.present();
 
     // TODO socket startConnection
-    this.socket.startConnection(this.loginIp).then(() => {
+    this.socket.startConnection().then(() => {
       this.getSocketMessages();
       this.fauth.doLogin({email: this.loginEmail, password: this.loginPassword}).then(
           () => {

@@ -6,7 +6,7 @@ export class User {
     PrimerApellido: string;
     SegundoApellido: string;
     TipoUsuario: number;
-    Foto: Blob; //TODO check if type needs to be string
+    Foto: Blob; // TODO check if type needs to be string
     Email: string;
     Telefono: string;
 }

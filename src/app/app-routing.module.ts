@@ -10,6 +10,7 @@ import { ChargingMenuPage } from './pages/charging-menu/charging-menu';
 import { TransactionListPage } from './pages/transaction-list/transaction-list';
 import { ReservationPage } from './pages/reservation/reservation';
 import { AddPlugPage } from './pages/add-plug/add-plug';
+
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginPage},

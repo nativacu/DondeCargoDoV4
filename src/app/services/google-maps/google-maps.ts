@@ -4,6 +4,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NavController } from '@ionic/angular';
 import { BehaviorSubject } from 'rxjs';
 import { Lugar } from '../../models/lugar';
+import { googleMapsApiKey } from '../../../environments/environment';
 
 declare var google;
 
@@ -34,7 +35,7 @@ export class GoogleMapsProvider {
     this.pleaseConnect = pleaseConnect;
     this.chargerObserver  = new BehaviorSubject(null);
     this.infoWindow = new BehaviorSubject(null);
-    this.apiKey = 'AIzaSyBUv92FvZgKWpQKeTc9KBZy7JzexjMElNw';
+    this.apiKey = googleMapsApiKey;
     return this.loadGoogleMaps();
 
   }

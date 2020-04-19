@@ -1,13 +1,10 @@
-<!--
-  Generated template for the AddPlugPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
-  <ion-navbar color="secondary">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
     <ion-title>Informacion sobre el plug</ion-title>
-  </ion-navbar>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
@@ -17,7 +14,7 @@
       <ion-input type='text' [formControl] = "serialForm.controls['serial']"></ion-input>
     </ion-item>
     <ion-item no-lines>
-        <button type="submit" ion-button default color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!serialForm.valid" (click)="upload(1)"><span class="glyphicon glyphicon-off"></span>Registrar</button>
+        <ion-button type="submit" color="secondary" style="text-transform: none; margin-left: 10px;" [disabled] = "!serialForm.valid" (click)="upload(1)"><span class="glyphicon glyphicon-off"></span>Registrar</ion-button>
     </ion-item>
   </form>
 </ion-content>

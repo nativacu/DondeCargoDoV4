@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthProvider } from '../auth/auth';
+import { serverAddress } from '../../../environments/environment';
+
 /*
   Generated class for the WebsocketProvider provider.
 
@@ -11,47 +13,42 @@ import { AuthProvider } from '../auth/auth';
 @Injectable()
 export class WebsocketProvider {
 
-  socket: WebSocket;
-  observable: Observable<any>;
-  constructor(public http: HttpClient, public afs: AuthProvider) {
-    console.log('Hello WebsocketProvider Provider');
-    // this.startConnection("10.60.16.74");
-  }
+    socket: WebSocket;
+    observable: Observable<any>;
+    constructor(public http: HttpClient, public afs: AuthProvider) {
+    }
 
-  startConnection(ipAddress: string) {
-    return new Promise<any>( (resolve, reject) => {
-      ipAddress = '190.113.73.11';
-      if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-        resolve();
-      } else {
-        this.socket = new WebSocket('ws://' + ipAddress + ':443/');
-        // this.socket = new WebSocket('ws://190.113.73.11:443');
+    startConnection() {
+        return new Promise<any>( (resolve, reject) => {
+            if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+                resolve();
+            } else {
+                this.socket = new WebSocket(serverAddress);
 
-        this.observable = new Observable(observer => {
-          this.socket.onmessage = (data) => {
-            console.log(data);
-            observer.next(JSON.parse(data.data));
-          };
+                this.observable = new Observable(observer => {
+                    this.socket.onmessage = function(data) {
+                        observer.next(JSON.parse(data.data));
+                    };
+                });
+                this.socket.onopen = ((event) => {
+                    resolve();
+                });
+                this.socket.onerror = ((event) => {
+                    reject('No se pudo establecer la comunicación con el servidor');
+                });
+            }
+
         });
-        this.socket.onopen = ((event) => {
-          resolve();
-        });
-        this.socket.onerror = ((event) => {
-          reject('Connection Failed');
-        });
-      }
+    }
+    sendMessage(data) {
+        this.socket.send(data);
+    }
 
-  });
-  }
-  sendMessage(data) {
-    this.socket.send(JSON.stringify(data));
-  }
-
-  public getMessages() {
-    return this.observable;
-  }
-  disconnect() {
-    this.socket.close();
-  }
+    getMessages() {
+        return this.observable ? this.observable : new Observable<any>();
+    }
+    disconnect() {
+        this.socket.close();
+    }
 
 }
