@@ -19,14 +19,13 @@ export class WebsocketProvider {
     }
 
     startConnection() {
-        return new Promise<any>( (resolve, reject) => {
+        return new Promise<string>( (resolve, reject) => {
             if (this.socket && this.socket.readyState === WebSocket.OPEN) {
                 resolve();
             } else {
                 this.socket = new WebSocket(serverAddress);
-
                 this.observable = new Observable(observer => {
-                    this.socket.onmessage = function(data) {
+                    this.socket.onmessage = (data) => {
                         observer.next(JSON.parse(data.data));
                     };
                 });
@@ -40,6 +39,7 @@ export class WebsocketProvider {
 
         });
     }
+
     sendMessage(data) {
         this.socket.send(data);
     }

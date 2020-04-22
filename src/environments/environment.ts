@@ -8,7 +8,7 @@ export const environment = {
 
 export const senderId = '1032475507428';
 export const oneSignalAppId = 'aa071ab9-bf8f-43ba-9082-77fbe0b255af';
-export const serverAddress = 'ws://190.113.73.11:443';
+export const serverAddress = 'ws://190.113.73.11:443/';
 export const googleMapsApiKey = 'AIzaSyDYYbX0dlWndChnG7gs37gXvUCUR1vFArg';
 export const firebase = {
   apiKey: 'AIzaSyB691bJp_LEwx37FIOXfcjEMrUEEwkbXuY',

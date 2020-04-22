@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button *ngIf="this.platform.checkPlatform();"></ion-back-button>
+            <ion-back-button *ngIf="this.platform.checkIsMobile();"></ion-back-button>
         </ion-buttons>
         <ion-title>Iniciar Sesión</ion-title>
     </ion-toolbar>
@@ -23,14 +23,8 @@
             <ion-icon name="eye" style="font-size:32px;"></ion-icon>
         </ion-button>
     </ion-item>
-    <!--<ion-item>
-        <ion-label position="floating">Ip address</ion-label>
-        <ion-input type="text" id="defaultip" [(ngModel)]="loginIp" #ip></ion-input>
-    </ion-item>-->
 
-<!--    <ion-item lines="none" >-->
-        <ion-button expand="full" color="primary" style="text-transform: none;" type="submit" value="Acceder" (click)="login()">Acceder</ion-button>
-<!--    </ion-item>-->
+    <ion-button expand="full" color="primary" style="text-transform: none;" type="submit" value="Acceder" (click)="login()">Acceder</ion-button>
 
     <!-- Register -->
     <ion-item lines="none">
@@ -38,5 +32,4 @@
             <span style="color: #2365db;" (click)="openRegister()">Únete</span>
         </p>
     </ion-item>
-    <button (click)="test()">test</button>
 </ion-content>

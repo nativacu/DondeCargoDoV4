@@ -18,8 +18,8 @@ export class PlatformProvider {
     this.isMobile = false;
   }
 
-  checkPlatform(): boolean {
-    return !this.plt.is('mobile');
+  checkIsMobile(): boolean {
+    return this.plt.is('mobile');
   }
 
 

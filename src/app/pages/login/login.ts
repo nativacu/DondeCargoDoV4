@@ -58,10 +58,14 @@ export class LoginPage implements OnInit {
       this.getSocketMessages();
       this.fauth.doLogin({email: this.loginEmail, password: this.loginPassword}).then(
           () => {
-            if (this.platform.checkPlatform()) {
-              this.loading.setDuration(5000);
-              new Promise<any>((resolve, reject) => {
-                this.loading.onDidDismiss(() => {
+            if (this.platform.checkIsMobile()) {
+
+              setTimeout(() => {
+                this.loading.dismiss();
+              }, 5000);
+
+              new Promise<any>(async (resolve, reject) => {
+                 await this.loading.onDidDismiss(() => {
                   reject('El servicio de notificaciones no esta disponible');
                 });
 
@@ -119,7 +123,6 @@ export class LoginPage implements OnInit {
 
   getSocketMessages() {
     this.socket.getMessages().subscribe((data: any) => {
-      console.log(data);
       this.loading.dismiss();
       switch (data.Command) {
         case 'ConexionCreated':

@@ -35,6 +35,7 @@ import { PlatformProvider } from './services/platform/platform';
 import { WebsocketProvider } from './services/websocket/websocket';
 import { firebase } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 
 @NgModule({
@@ -73,6 +74,7 @@ import { Network } from '@ionic-native/network/ngx';
       StatusBar,
       GoogleMapsProvider,
       LocationsProvider,
+      Geolocation,
       HttpRequestProvider,
       AngularFireDatabase,
       AuthProvider,

@@ -50,7 +50,6 @@ export class AppComponent {
         // });
         this.initializeApp();
         this.fauth.currUser.subscribe((usr) => {
-            console.log(usr);
             this.user = usr;
             if (this.user) {
                 this.loggedIn = true;
@@ -62,16 +61,7 @@ export class AppComponent {
                 this.userName = this.user.PrimerNombre;
                 this.lname = this.user.PrimerApellido;
                 this.phoneNumber = this.user.Telefono;
-            } else {
-                // this.user = true;
-                this.imageSrc = 'https://www.stickpng.com/assets/images/585e4bf3cb11b227491c339a.png';
-                this.userName = 'Pedro';
-                this.lname = 'Pérez';
-                this.email = 'ok';
-                this.phoneNumber = '809-000-0000';
-                this.accountType = 1;
             }
-
         });
 
         fauth.getUser().subscribe(user => {
