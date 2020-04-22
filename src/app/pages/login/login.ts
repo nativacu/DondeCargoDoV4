@@ -49,7 +49,7 @@ export class LoginPage implements OnInit {
   async login() {
     this.loading = await this.loadingCtrl.create({
       spinner: 'circles',
-      message: 'Connecting',
+      message: 'Conectando',
     });
     await this.loading.present();
 

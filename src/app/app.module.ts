@@ -36,6 +36,7 @@ import { WebsocketProvider } from './services/websocket/websocket';
 import { firebase } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
 
+
 @NgModule({
   declarations: [
       AppComponent,
@@ -62,9 +63,6 @@ import { Network } from '@ionic-native/network/ngx';
         HttpClientModule,
         AngularFireModule.initializeApp(firebase),
         AngularFireAuthModule
-    ],
-    exports: [
-
     ],
   providers: [
     StatusBar,

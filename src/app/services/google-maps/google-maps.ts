@@ -360,10 +360,9 @@ export class GoogleMapsProvider {
     const chargerWeekEnd = this.getWeekDayByNumber(charger.Dia_Fin_Operaciones);
     let isOpen = false;
 
-    // console.log("Date " + weekDate + " time" + time);
     if ((weekDate >= chargerWeekStart && weekDate <= chargerWeekEnd && chargerWeekStart <= chargerWeekEnd) ||
     ((weekDate <= chargerWeekEnd || weekDate >= chargerWeekStart) && chargerWeekStart > chargerWeekEnd)) {
-      // revisar si eso es string
+      // TODO revisar si eso es string
       if (time >= startHour && time < endHour) {
         isOpen = true;
       }

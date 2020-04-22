@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController } from '@ionic/angular';
 import { AuthProvider } from '../../services/auth/auth';
-import { HttpRequestProvider } from '../../services/http-request/http-request';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { regexValidators, uniqueIdValidator } from '../validators/validators';
@@ -25,8 +24,8 @@ export class RegisterPage {
   imageSrc: any;
   picture: HTMLImageElement;
   registerForm: FormGroup;
-  constructor(public navCtrl: NavController, private plt: PlatformProvider, public navParams: NavParams, public fauth: AuthProvider, public http: HttpRequestProvider, public formBuilder: FormBuilder,
-              public socket: WebsocketProvider, public loadingCtrl: LoadingController, private camera: Camera, private dataService: DataHandlerService) {
+  constructor(public navCtrl: NavController, private plt: PlatformProvider, public fauth: AuthProvider, public formBuilder: FormBuilder,
+              public socket: WebsocketProvider, public loadingCtrl: LoadingController, private dataService: DataHandlerService) {
 
     this.registerForm = this.formBuilder.group({
       email: ['', Validators.compose([
@@ -119,14 +118,14 @@ export class RegisterPage {
     if (this.plt.isMobile) {
       const options: CameraOptions = {
         quality: 50,
-        destinationType: this.camera.DestinationType.DATA_URL,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE,
+        destinationType: Camera.DestinationType.DATA_URL,
+        encodingType: Camera.EncodingType.JPEG,
+        mediaType: Camera.MediaType.PICTURE,
         correctOrientation: true,
-        sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+        sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
       };
 
-      this.camera.getPicture(options).then((imageData) => {
+      Camera.getPicture(options).then((imageData) => {
         this.imageSrc = 'data:image/jpeg;base64,' + imageData;
         this.picture.src = this.imageSrc;
       }, (err) => {
