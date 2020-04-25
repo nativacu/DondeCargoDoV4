@@ -250,9 +250,11 @@ export class GoogleMapsProvider {
         chargerObserver.next(locations[index]);
         infoWindow.addListener('closeclick', function() {
           const button = document.getElementById('reserveButton');
+          const buttonadd = document.getElementById('addPlugButton');
+          const buttonconf = document.getElementById('ConfigurePlugButton');
           const map = document.getElementById('map');
           map.style.height = '100%';
-          button.hidden = true;
+          button.hidden = buttonadd.hidden = buttonconf.hidden = true;
         }
         );
       });
