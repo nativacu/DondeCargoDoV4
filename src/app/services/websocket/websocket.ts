@@ -14,7 +14,7 @@ import { serverAddress } from '../../../environments/environment';
 export class WebsocketProvider {
 
     private static socket: WebSocket;
-    observable: Observable<any>;
+    private static observable: Observable<any>;
     constructor(public http: HttpClient, public afs: AuthProvider) {
     }
 
@@ -24,7 +24,7 @@ export class WebsocketProvider {
                 resolve();
             } else {
                 WebsocketProvider.socket = new WebSocket(serverAddress);
-                this.observable = new Observable(observer => {
+                WebsocketProvider.observable = new Observable(observer => {
                     WebsocketProvider.socket.onmessage = (data) => {
                         observer.next(JSON.parse(data.data));
                     };
@@ -45,7 +45,7 @@ export class WebsocketProvider {
     }
 
     getMessages() {
-        return this.observable ? this.observable : new Observable<any>();
+        return WebsocketProvider.observable ? WebsocketProvider.observable : new Observable<any>();
     }
     disconnect() {
         WebsocketProvider.socket.close();
