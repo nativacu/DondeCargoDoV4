@@ -13,26 +13,26 @@ import { serverAddress } from '../../../environments/environment';
 @Injectable()
 export class WebsocketProvider {
 
-    socket: WebSocket;
+    private static socket: WebSocket;
     observable: Observable<any>;
     constructor(public http: HttpClient, public afs: AuthProvider) {
     }
 
     startConnection() {
         return new Promise<string>( (resolve, reject) => {
-            if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+            if (WebsocketProvider.socket && WebsocketProvider.socket.readyState === WebSocket.OPEN) {
                 resolve();
             } else {
-                this.socket = new WebSocket(serverAddress);
+                WebsocketProvider.socket = new WebSocket(serverAddress);
                 this.observable = new Observable(observer => {
-                    this.socket.onmessage = (data) => {
+                    WebsocketProvider.socket.onmessage = (data) => {
                         observer.next(JSON.parse(data.data));
                     };
                 });
-                this.socket.onopen = ((event) => {
+                WebsocketProvider.socket.onopen = ((event) => {
                     resolve();
                 });
-                this.socket.onerror = ((event) => {
+                WebsocketProvider.socket.onerror = ((event) => {
                     reject('No se pudo establecer la comunicación con el servidor');
                 });
             }
@@ -41,14 +41,14 @@ export class WebsocketProvider {
     }
 
     sendMessage(data) {
-        this.socket.send(data);
+        WebsocketProvider.socket.send(data);
     }
 
     getMessages() {
         return this.observable ? this.observable : new Observable<any>();
     }
     disconnect() {
-        this.socket.close();
+        WebsocketProvider.socket.close();
     }
 
 }
