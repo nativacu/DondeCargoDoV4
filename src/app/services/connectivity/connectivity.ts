@@ -10,7 +10,7 @@ export class ConnectivityProvider {
   onDevice: boolean;
 
   constructor(public platform: Platform, private network: Network) {
-    this.onDevice = this.platform.is('mobile');
+    this.onDevice = this.platform.is('cordova');
   }
 
   isOnline(): boolean {
