@@ -74,7 +74,7 @@ export class AppComponent {
             statusBar.styleDefault();
             splashScreen.hide();
 
-            if (this.platform.is('mobile')) {
+            if (this.platform.is('cordova')) {
                 OneSignal.startInit(oneSignalAppId, senderId);
                 OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
                 OneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));

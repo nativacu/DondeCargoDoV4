@@ -19,7 +19,7 @@ export class PlatformProvider {
   }
 
   checkIsMobile(): boolean {
-    return this.plt.is('mobile');
+    return this.plt.is('cordova');
   }
 
 
