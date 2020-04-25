@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild, ViewEncapsulation} from '@angular/core';
 import {MenuController, NavController, Platform} from '@ionic/angular';
 import {LocationsProvider} from '../../services/locations/locations';
 import {GoogleMapsProvider} from '../../services/google-maps/google-maps';
@@ -9,7 +9,9 @@ import { Lugar } from '../../models/lugar';
 
 @Component({
     selector: 'page-map',
-    templateUrl: 'map.html'
+    templateUrl: 'map.html',
+    styleUrls: ['map.scss'],
+    encapsulation: ViewEncapsulation.None
 })
 
 export class MapPage {
