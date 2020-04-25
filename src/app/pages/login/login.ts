@@ -73,20 +73,20 @@ export class LoginPage implements OnInit {
                   resolve(idData);
                 });
               }).then((idData) => {
-                this.socket.sendMessage(JSON.stringify({
+                this.socket.sendMessage({
                   Command: 'CrearConexion',
                   Email: this.loginEmail,
                   OneSignalId: idData.userId
-                }));
+                });
               }, (error) => {
                 window.alert(error);
               });
             } else {
-              this.socket.sendMessage(JSON.stringify({
+              this.socket.sendMessage({
                 Command: 'CrearConexion',
                 Email: this.loginEmail,
                 OneSignalId: 0
-              }));
+              });
             }
           },
           (error) => {

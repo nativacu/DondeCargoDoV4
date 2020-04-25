@@ -41,7 +41,7 @@ export class WebsocketProvider {
     }
 
     sendMessage(data) {
-        WebsocketProvider.socket.send(data);
+        WebsocketProvider.socket.send(JSON.stringify(data));
     }
 
     getMessages() {

@@ -65,7 +65,7 @@ export class RegisterPlugPage {
        , Dia_Fin_Operaciones: this.daysArray[this.dateEnd], lat: this.placeLocation.lat(), lng: this.placeLocation.lng()
        , Desc: this.stationDesc, Tipo: this.tipo, Costo: this.number};
       console.log(JSON.stringify(data));
-      this.socket.sendMessage(JSON.stringify(data));
+      this.socket.sendMessage(data);
   }
 
 }

@@ -160,14 +160,14 @@ export class AppComponent {
                     text: 'No',
                     role: 'cancel',
                     handler: () => {
-                        this.socket.sendMessage(JSON.stringify({Command: 'ChargingConfirmation', Confirmation: 'N' , PlugID: + payload.additionalData}));
+                        this.socket.sendMessage({Command: 'ChargingConfirmation', Confirmation: 'N' , PlugID: + payload.additionalData});
                     }
                 },
                 {
                     text: 'Sí',
                     handler: () => {
                         // this.nav.push(ChargeConfirmationPage, {data: payload.additionalData});
-                        this.socket.sendMessage(JSON.stringify({Command: 'ChargingConfirmation', Confirmation: 'Y' , PlugID: + payload.additionalData}));
+                        this.socket.sendMessage({Command: 'ChargingConfirmation', Confirmation: 'Y' , PlugID: + payload.additionalData});
                     }
                 }
             ]
@@ -176,7 +176,7 @@ export class AppComponent {
     }
 
     showAllTransactions() {
-        this.socket.sendMessage(JSON.stringify({Command: 'InitTransactionRequest', Email: this.user.Email}));
+        this.socket.sendMessage({Command: 'InitTransactionRequest', Email: this.user.Email});
     }
 
 }

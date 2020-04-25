@@ -23,6 +23,6 @@ export class ChargeConfirmationPage {
   }
 
   sendResponse(response: any) {
-    this.websocket.sendMessage(JSON.stringify({Command: 'ChargingConfirmation', Confirmation: (response === 1 ? 'Y' : 'N') , PlugID: + this.placeData.PlugID}));
+    this.websocket.sendMessage({Command: 'ChargingConfirmation', Confirmation: (response === 1 ? 'Y' : 'N') , PlugID: + this.placeData.PlugID});
   }
 }

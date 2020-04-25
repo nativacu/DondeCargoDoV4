@@ -97,7 +97,7 @@ export class RegisterPage {
               Telefono: this.registerForm.controls.telNumber.value
             };
 
-            this.socket.sendMessage(JSON.stringify(dataToSend));
+            this.socket.sendMessage(dataToSend);
           },
           (error) => {
             window.alert(error);

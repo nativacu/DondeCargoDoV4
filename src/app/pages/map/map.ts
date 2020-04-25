@@ -63,7 +63,7 @@ export class MapPage {
                     break;
             }
         });
-        this.socket.sendMessage(JSON.stringify({Command: 'GetLugares'}));
+        this.socket.sendMessage({Command: 'GetLugares'});
         this.adminButton = false;
 
     }
