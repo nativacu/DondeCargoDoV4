@@ -18,7 +18,7 @@ export class WebsocketProvider {
     constructor(public http: HttpClient, public afs: AuthProvider) {
     }
 
-    startConnection() {
+    startConnection(): Promise<string> {
         return new Promise<string>( (resolve, reject) => {
             if (WebsocketProvider.socket && WebsocketProvider.socket.readyState === WebSocket.OPEN) {
                 resolve();

@@ -7,7 +7,7 @@ import { LoginPage } from './pages/login/login';
 import { AuthProvider } from './services/auth/auth';
 import { HttpRequestProvider } from './services/http-request/http-request';
 import { WebsocketProvider } from './services/websocket/websocket';
-import { OneSignal } from '@ionic-native/onesignal';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { oneSignalAppId, senderId } from '../environments/environment';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { OSNotificationPayload } from '@ionic-native/onesignal';
@@ -36,7 +36,8 @@ export class AppComponent {
                 public fauth: AuthProvider,
                 public http: HttpRequestProvider,
                 public socket: WebsocketProvider,
-                private alertCtrl: AlertController) {
+                private alertCtrl: AlertController,
+                private oneSignal: OneSignal) {
 
         //  this.push.hasPermission()
         // .then((res: any) => {
@@ -75,11 +76,11 @@ export class AppComponent {
             splashScreen.hide();
 
             if (this.platform.is('cordova')) {
-                OneSignal.startInit(oneSignalAppId, senderId);
-                OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification);
-                OneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
-                OneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
-                OneSignal.endInit();
+                this.oneSignal.startInit(oneSignalAppId, senderId);
+                this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+                this.oneSignal.handleNotificationReceived().subscribe(data => this.onPushReceived(data.payload));
+                this.oneSignal.handleNotificationOpened().subscribe(data => this.onPushOpened(data.notification.payload));
+                this.oneSignal.endInit();
             }
 
         });
@@ -121,26 +122,8 @@ export class AppComponent {
         });
     }
 
-
-    changePhoneNumber() {
-        const currentNo = document.getElementById('phoneNumber');
-        const input = document.getElementById('phoneInput');
-        // currentNo.style.display = "none";
-        // input.style.display="inherit";
-    }
-
-    showInfo() {
-        this.editing = false;
-        this.http.sendPostRequest({primernombre: this.userName, segundonombre: 0, primerapellido: 'Perez', segundoapellido: 0, t_usuario: 2,
-            foto: 0, email: this.email, telefono: this.phoneNumber}, 'Update.php');
-    }
-
-    enableEdit() {
-        this.editing = true;
-    }
-
-    logout() {
-        this.fauth.doLogout();
+    async logout() {
+        await this.fauth.doLogout();
         this.socket.sendMessage({Command: 'LogOut'});
         // this.nav.setRoot(LoginPage);
     }

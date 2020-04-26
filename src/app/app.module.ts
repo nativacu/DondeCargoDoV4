@@ -36,6 +36,7 @@ import { WebsocketProvider } from './services/websocket/websocket';
 import { firebase } from '../environments/environment';
 import { Network } from '@ionic-native/network/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
 
 
 @NgModule({
@@ -82,6 +83,7 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
       PlatformProvider,
       WebsocketProvider,
       Network,
+      OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

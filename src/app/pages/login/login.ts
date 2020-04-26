@@ -4,7 +4,9 @@ import { AuthProvider } from '../../services/auth/auth';
 import { HttpRequestProvider } from '../../services/http-request/http-request';
 import { PlatformProvider } from '../../services/platform/platform';
 import { WebsocketProvider } from '../../services/websocket/websocket';
-import { OneSignal } from '@ionic-native/onesignal';
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { FirebaseUser, LoginCommand, User } from '../../models/user';
+import { LogicalFileSystem } from '@angular/compiler-cli/src/ngtsc/file_system';
 
 
 /**
@@ -34,7 +36,8 @@ export class LoginPage implements OnInit {
       public fauth: AuthProvider,
       public http: HttpRequestProvider,
       public socket: WebsocketProvider,
-      public loadingCtrl: LoadingController) {
+      public loadingCtrl: LoadingController,
+      private oneSignal: OneSignal) {
   }
   ngOnInit(): void {
     // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -53,10 +56,16 @@ export class LoginPage implements OnInit {
     });
     await this.loading.present();
 
+    const startedConnection = await this.startSocketConnection();
+
+    if (startedConnection) {
+      await this.connectToFirebase();
+    }
     // TODO socket startConnection
-    this.socket.startConnection().then(() => {
-      this.getSocketMessages();
-      this.fauth.doLogin({email: this.loginEmail, password: this.loginPassword}).then(
+
+    await this.socket.startConnection().then(() => {
+      const user = new FirebaseUser(this.loginEmail, this.loginPassword);
+      this.fauth.doLogin(user).then(
           () => {
             if (this.platform.checkIsMobile()) {
 
@@ -69,24 +78,18 @@ export class LoginPage implements OnInit {
                   reject('El servicio de notificaciones no esta disponible');
                 });
 
-                OneSignal.getIds().then((idData) => {
+                 this.oneSignal.getIds().then((idData) => {
                   resolve(idData);
                 });
               }).then((idData) => {
-                this.socket.sendMessage({
-                  Command: 'CrearConexion',
-                  Email: this.loginEmail,
-                  OneSignalId: idData.userId
-                });
+                const command = new LoginCommand(this.loginEmail, idData.userId);
+                this.socket.sendMessage(command);
               }, (error) => {
                 window.alert(error);
               });
             } else {
-              this.socket.sendMessage({
-                Command: 'CrearConexion',
-                Email: this.loginEmail,
-                OneSignalId: 0
-              });
+              const command = new LoginCommand(this.loginEmail, 0);
+              this.socket.sendMessage(command);
             }
           },
           (error) => {
@@ -100,21 +103,52 @@ export class LoginPage implements OnInit {
     });
   }
 
+  async startSocketConnection(): Promise<boolean> {
+    try {
+      await this.socket.startConnection();
+      this.getSocketMessages();
+      return true;
+    } catch (error) {
+      window.alert(error);
+      this.loading.dismiss();
+      return false;
+    }
+  }
+
+  async connectToFirebase() {
+    try {
+      const user = new FirebaseUser(this.loginEmail, this.loginPassword);
+      await this.fauth.doLogin(user);
+      if (this.platform.checkIsMobile()) {
+        setTimeout(() => {
+          this.loading.dismiss();
+        }, 5000);
+
+        new Promise<any>(async (resolve, reject) => {
+          await this.loading.onDidDismiss(() => {
+            reject('El servicio de notificaciones no esta disponible');
+          });
+
+          await this.oneSignal.getIds().then((idData) => {
+            resolve(idData);
+          });
+        }).then((idData) => {
+          const command = new LoginCommand(this.loginEmail, idData.userId);
+          this.socket.sendMessage(command);
+        }, (error) => {
+          window.alert(error);
+        });
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   openRegister() {
     this.navCtrl.navigateForward('register');
     // const registerModal = this.modal.create('RegisterPage');
     // registerModal.present();
-  }
-
-  dismiss() {
-    // using the injected ModalController this page
-    // can "dismiss" itself and optionally pass back data
-
-  }
-
-  test() {
-    // TODO options
-    // this.navCtrl.navigateForward('charging-menu', {Date: new Date(2019, 11, 13, 0, 38, 6)});
   }
 
   showHide() {
@@ -122,11 +156,11 @@ export class LoginPage implements OnInit {
   }
 
   getSocketMessages() {
-    this.socket.getMessages().subscribe((data: any) => {
+    this.socket.getMessages().subscribe((data: LoginCommand) => {
       this.loading.dismiss();
       switch (data.Command) {
         case 'ConexionCreated':
-            this.fauth.currUser.next(data);
+            this.fauth.currUser.next(data.User);
             this.navCtrl.navigateRoot('map');
             break;
         default:

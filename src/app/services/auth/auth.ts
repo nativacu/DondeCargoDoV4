@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { BehaviorSubject } from 'rxjs';
+import { FirebaseUser, User } from '../../models/user';
+import UserCredential = firebase.auth.UserCredential;
 /*
   Generated class for the AuthProvider provider.
 
@@ -12,7 +14,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class AuthProvider {
   email: string;
-  currUser: BehaviorSubject<any>;
+  currUser: BehaviorSubject<User>;
   constructor(public http: HttpClient, public afAuth: AngularFireAuth) {
     this.currUser = new BehaviorSubject(null);
     console.log('Hello AuthProvider Provider');
@@ -27,16 +29,13 @@ export class AuthProvider {
    });
   }
 
-  doLogin(value) {
-   return new Promise<any>((resolve, reject) => {
-    this.afAuth.auth.signInWithEmailAndPassword(value.email, value.password)
-     .then(
-       res => {
-         this.email = value.email;
-         resolve(res);
-        },
-       err => reject(err));
-   });
+  async doLogin(inputCredentials: FirebaseUser) {
+      try {
+         const login = await this.afAuth.auth.signInWithEmailAndPassword(inputCredentials.email, inputCredentials.password);
+         this.email = login.user.email;
+      } catch (err) {
+          console.log(err);
+      }
   }
 
   doLogout() {

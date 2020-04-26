@@ -1,18 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { FirebaseUser } from '../../models/user';
 /*
   Generated class for the FirebaseProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
 */
-export interface User {
-  $key: string;
-  name: string;
-  email: string;
-  type: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class FirebaseProvider implements OnInit {
@@ -22,17 +17,17 @@ export class FirebaseProvider implements OnInit {
     console.log('Hello FirebaseProvider Provider');
   }
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.usersRef = this.db.list('users')
+    // Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    // Add 'implements OnInit' to the class.
+    this.usersRef = this.db.list('users');
   }
   // Create User
-  AddUser(user: User) {
+  AddUser(user: FirebaseUser) {
     this.usersRef.push({
       name: user.name,
       email: user.email,
       type: user.type
-    })
+    });
   }
   // Read User
   GetUser(id: string) {
@@ -44,15 +39,15 @@ export class FirebaseProvider implements OnInit {
   GetUsersList() {
     this.usersRef = this.db.list('users');
     return this.usersRef;
-  }  
+  }
   // Update User
-  UpdateUser(user: User) {
-    this.userRef.update({
+  async UpdateUser(user: FirebaseUser) {
+    await this.userRef.update({
       name: user.name,
       email: user.email,
       type: user.type
     });
-  }  
+  }
   // Delete User
   DeleteUser(id: string) {
     this.userRef = this.db.object('users/' + id);
